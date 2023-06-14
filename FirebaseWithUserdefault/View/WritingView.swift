@@ -8,17 +8,43 @@
 import SwiftUI
 
 struct WritingView: View {
+    
+    // MARK: - PROPERTY
     @Binding var nickName: String
     @Binding var contents: String
     
+    @State private var text: String = ""
+    
+    
+    // MARK: - BODY
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
-            TextField("닉네임", text: $nickName) {
+            TextField("Enter your Name", text: $nickName) {
 
             }
+            .frame(maxWidth: .infinity, maxHeight: 50)
+            .background(
+                Color(.gray)
+                    .opacity(0.2)
+            )
+            .cornerRadius(5)
+            
+            TextField("Please fill out the contents", text: $contents) {
 
-            TextField("내용", text: $contents) {
-
+            }
+            .frame(maxWidth: .infinity, maxHeight: 100)
+            .background(
+                Color(.gray)
+                    .opacity(0.1)
+            )
+            .cornerRadius(5)
+            
+            Button(action: {
+                // save info
+            }) {
+                HStack {
+                    Text("저장")
+                }
             }
         }
         .padding()
