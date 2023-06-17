@@ -56,51 +56,6 @@ struct EditPostView: View {
     }
 }
 
-
-//struct DataInput: View {
-//
-//    var title: String
-//    @Binding var userInput: String
-//
-//    var body: some View {
-//        VStack(alignment: HorizontalAlignment.leading) {
-//            Text(title)
-//                .font(.headline)
-//            TextField("Enter \(title)", text: $userInput)
-//                .textFieldStyle(RoundedBorderTextFieldStyle())
-//        }
-//        .padding()
-//    }
-//}
-
-//struct EditCarView: View {
-
-//
-//    var body: some View {
-//        VStack {
-//            DataInput(title: "Name", userInput: $selectedCar.name)
-//            DataInput(title: "Description", userInput: $selectedCar.description)
-//
-//            Toggle(isOn: $selectedCar.isHybrid) {
-//                Text("Hybrid").font(.headline)
-//            }.padding()
-//            Button  {
-//                let editCar = Car(
-//                    id: selectedCar.id,
-//                    name: selectedCar.name,
-//                    description: selectedCar.description,
-//                    isHybrid: selectedCar.isHybrid
-//                )
-//                carStore.editCar(car: editCar)
-//                self.mode.wrappedValue.dismiss()
-//                isOnEditCarView.toggle()
-//            } label: {
-//                Text("확인")
-//            }
-//        }
-//    }
-//}
-
 struct EditPostView_Previews: PreviewProvider {
     @State static var selectedPost = PostInfo(id: UUID().uuidString, nickName: "yun", contents: "won")
     @State static var isOnEditPostView = false
