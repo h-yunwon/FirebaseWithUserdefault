@@ -7,14 +7,59 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 struct PostDetailView: View {
+    // MARK: - PROPERTY
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @ObservedObject var firebaseVM: FirebaseViewModel
+    @State private var isOnEditPostView: Bool = false
+    @State var selectedPost: PostInfo
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .center, spacing: 10) {
+            Text(selectedPost.nickName)
+            .frame(maxWidth: .infinity, maxHeight: 50)
+            .background(
+                Color(.gray)
+                    .opacity(0.2)
+            )
+            .cornerRadius(5)
+            
+            Text(selectedPost.contents)
+            .lineLimit(4)
+            .frame(maxWidth: .infinity, maxHeight: 100)
+            .background(
+                Color(.gray)
+                    .opacity(0.1)
+            )
+            .cornerRadius(5)
+            
+            HStack {
+                Button(action: {
+                    // 수정버튼
+                }) {
+                    HStack {
+                        Text("수정")
+                    }
+                }
+                
+                Button(action: {
+                    firebaseVM.deletePost(key: selectedPost.id)
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Text("삭제")
+                    }
+                }
+            }
+        }
+        .padding()
     }
 }
 
+@available(iOS 15.0, *)
 struct PostDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        PostDetailView()
+        PostDetailView(firebaseVM: FirebaseViewModel(), selectedPost: PostInfo(id: UUID().uuidString, nickName: "yun", contents: "won"))
     }
 }

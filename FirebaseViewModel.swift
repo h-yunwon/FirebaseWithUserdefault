@@ -93,7 +93,7 @@ class FirebaseViewModel: ObservableObject {
     }
     
     func stopListening() {
-        self.ref?.removeAllObservers()
+        ref?.removeAllObservers()
     }
     
     func addPost(post: PostInfo) {

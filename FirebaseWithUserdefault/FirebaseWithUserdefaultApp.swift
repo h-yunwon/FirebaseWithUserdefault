@@ -18,6 +18,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   }
 }
 
+@available(iOS 15.0, *)
 @main
 struct FirebaseWithUserdefaultApp: App {
   // register app delegate for Firebase setup

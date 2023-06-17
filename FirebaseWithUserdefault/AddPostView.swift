@@ -10,6 +10,7 @@ import SwiftUI
 struct AddPostView: View {
     
     // MARK: - PROPERTY
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var firebaseVM: FirebaseViewModel
     
     @State private var nickName: String = ""
@@ -40,6 +41,7 @@ struct AddPostView: View {
             
             Button(action: {
                 firebaseVM.addPost(post: PostInfo(id: UUID().uuidString, nickName: nickName, contents: contents))
+                presentationMode.wrappedValue.dismiss()
             }) {
                 HStack {
                     Text("저장")

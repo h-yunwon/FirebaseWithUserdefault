@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct ListCellView: View {
-    var post: PostInfo
+    let post: PostInfo
     
     var body: some View {
-        HStack{
+        VStack(alignment: .leading, spacing: 5){
             Text(post.nickName)
+                .font(.title2)
+                .fontWeight(.heavy)
+                .foregroundColor(.accentColor)
+            
+            
+            Text(post.contents)
+                .font(.body)
+                .multilineTextAlignment(.leading)
+                .lineLimit(4)
+                .padding(.trailing, 8)
         }
     }
 }

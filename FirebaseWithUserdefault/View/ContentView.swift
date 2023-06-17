@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@available(iOS 15.0, *)
 struct ContentView: View {
     
     // MARK: - PROPERTY
@@ -16,27 +17,28 @@ struct ContentView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             NavigationView {
-                LazyVStack{
+                VStack{
                     Text("데이터베이스 변경사항: \(firebaseVM.changeCount)")
                     List {
                         ForEach(firebaseVM.posts, id: \.self) { post in
                             NavigationLink {
-                                PostDetailView()
+                                PostDetailView(firebaseVM: firebaseVM, selectedPost: post)
                             } label: {
                                 ListCellView(post: post)
                             }
                         }
                     }
-                    .navigationBarTitle(Text("유저 정보"))
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarTrailing) {
-                            NavigationLink(destination: AddPostView(firebaseVM: firebaseVM)) {
-                                Image(systemName: "plus")
-                            }
-                        }
+                }
+            }
+            .navigationBarTitle(Text("유저 정보"))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: AddPostView(firebaseVM: firebaseVM)) {
+                        Image(systemName: "plus")
                     }
                 }
-            }.onAppear {
+            }
+            .onAppear {
                 firebaseVM.listenToRealtimeDatabase()
             }
             .onDisappear {
@@ -47,6 +49,7 @@ struct ContentView: View {
 }
 
 // MARK: - PREVIEW
+@available(iOS 15.0, *)
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
