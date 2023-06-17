@@ -35,13 +35,9 @@ struct PostDetailView: View {
             .cornerRadius(5)
             
             HStack {
-                Button(action: {
-                    // 수정버튼
-                }) {
-                    HStack {
-                        Text("수정")
-                    }
-                }
+                NavigationLink("수정", destination: {
+                    EditPostView(firebaseVM: firebaseVM, selectedPost: $selectedPost, isOnEditPostView: $isOnEditPostView)
+                })
                 
                 Button(action: {
                     firebaseVM.deletePost(key: selectedPost.id)
