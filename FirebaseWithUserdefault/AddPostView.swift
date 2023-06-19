@@ -13,42 +13,55 @@ struct AddPostView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var firebaseVM: FirebaseViewModel
     
-    @State private var nickName: String = ""
-    @State private var contents: String = ""
-    
     // MARK: - BODY
     var body: some View {
-        VStack(alignment: .center, spacing: 10) {
-            TextField("Enter your Name", text: $nickName) {
-
+        NavigationStack {
+            VStack(alignment: .center, spacing: 10) {
+                Text("내 이름")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity ,alignment: .leading)
+                Text(firebaseVM.nickName)
+                .frame(maxWidth: .infinity, maxHeight: 50)
+                .background(
+                    Color(.gray)
+                        .opacity(0.2)
+                )
+                .cornerRadius(5)
+                .padding(.bottom, 20)
+                
+                Text("내 정보")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity ,alignment: .leading)
+                Text(firebaseVM.contents)
+                .lineLimit(4)
+                .frame(maxWidth: .infinity, maxHeight: 100)
+                .background(
+                    Color(.gray)
+                        .opacity(0.1)
+                )
+                .cornerRadius(5)
+                
+                Button(action: {
+                    firebaseVM.addPost(post: PostInfo(id: UUID().uuidString, nickName: firebaseVM.nickName, contents: firebaseVM.contents))
+                        self.presentationMode.wrappedValue.dismiss()
+                    }) {
+                        HStack {
+                            Text("업로드")
+                        }
+                    }
             }
-            .frame(maxWidth: .infinity, maxHeight: 50)
-            .background(
-                Color(.gray)
-                    .opacity(0.2)
-            )
-            .cornerRadius(5)
-            
-            TextField("Please fill out the contents", text: $contents) {
-
-            }
-            .frame(maxWidth: .infinity, maxHeight: 100)
-            .background(
-                Color(.gray)
-                    .opacity(0.1)
-            )
-            .cornerRadius(5)
-            
-            Button(action: {
-                firebaseVM.addPost(post: PostInfo(id: UUID().uuidString, nickName: nickName, contents: contents))
-                presentationMode.wrappedValue.dismiss()
-            }) {
-                HStack {
-                    Text("저장")
-                }
-            }
+            .padding()
         }
-        .padding()
+        .navigationTitle("내 정보")
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarTrailing) {
+//                NavigationLink(destination: EditPostView(), label: {
+//                    Text("Edit")
+//                })
+//            }
+//        }
     }
 }
 

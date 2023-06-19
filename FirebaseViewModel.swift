@@ -14,8 +14,8 @@ class FirebaseViewModel: ObservableObject {
     
     // 변경 사항을 감지하기 위해 사용되는 Published 프로퍼티들
     @Published var posts: [PostInfo] = []  // 게시물 배열
-    @Published var nickName: String = ""  // 닉네임
-    @Published var contents: String = ""  // 내용
+    @Published var nickName: String = "Test nickname"  // 닉네임
+    @Published var contents: String = "Text contents"  // 내용
     
     let ref: DatabaseReference? = Database.database().reference()  // Firebase Realtime Database에 대한 경로 참조
     
@@ -23,6 +23,20 @@ class FirebaseViewModel: ObservableObject {
     private var decoder = JSONDecoder()  // JSON 데이터를 디코딩하기 위한 JSON 디코더
     
     // MARK: - FUNCTION
+    
+    func savePostInfo(myInfo: PostInfo) {
+        if let encoderData = try? encoder.encode(myInfo) {
+            UserDefaults.standard.set(encoderData, forKey: "MyInfo")
+        }
+    }
+    
+    func loadPostInfo() {
+        if let encoderData = try? UserDefaults.standard.data(forKey: "MyInfo"),
+            let myInfo = try? decoder.decode(PostInfo.self, from: encoderData) {
+            nickName = myInfo.nickName
+            contents = myInfo.contents
+        }
+    }
     
     func listenToRealtimeDatabase() {
         guard let databasePath = ref?.child("posts") else {

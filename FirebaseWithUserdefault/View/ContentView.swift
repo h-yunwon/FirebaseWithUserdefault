@@ -26,11 +26,14 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("유저 정보"))
+            .navigationBarTitle(Text("User List"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: AddPostView(firebaseVM: firebaseVM)) {
-                        Image(systemName: "plus")
+                        Image(systemName: "person.crop.circle")
+                    }
+                    .onAppear {
+                        firebaseVM.loadPostInfo()
                     }
                 }
             }

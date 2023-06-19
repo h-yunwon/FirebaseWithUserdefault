@@ -9,17 +9,19 @@ import SwiftUI
 
 struct EditPostView: View {
     // MARK: - PROPERTY
-    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     @ObservedObject var firebaseVM : FirebaseViewModel
     @State private var nickName: String = ""
     @State private var contents: String = ""
-    @Binding var selectedPost: PostInfo
     @Binding var isOnEditPostView: Bool
 
     // MARK: - BODY
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
-            TextField("Enter your Name", text: $selectedPost.nickName) {
+            Text("내 이름")
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity ,alignment: .leading)
+            TextField("Enter your Name", text: $firebaseVM.nickName) {
                 
             }
             .frame(maxWidth: .infinity, maxHeight: 50)
@@ -29,7 +31,11 @@ struct EditPostView: View {
             )
             .cornerRadius(5)
             
-            TextField("Please fill out the contents", text: $selectedPost.contents) {
+            Text("내 정보")
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity ,alignment: .leading)
+            TextField("Please fill out the contents", text: $firebaseVM.contents) {
                 
             }
             .frame(maxWidth: .infinity, maxHeight: 100)
@@ -40,16 +46,9 @@ struct EditPostView: View {
             .cornerRadius(5)
             
             Button  {
-                let editPost = PostInfo(
-                    id: selectedPost.id,
-                    nickName: selectedPost.nickName,
-                    contents: selectedPost.contents
-                )
-                firebaseVM.editPost(post: editPost)
-                self.mode.wrappedValue.dismiss()
                 isOnEditPostView.toggle()
             } label: {
-                Text("확인")
+                Text("저장")
             }
         }
         .padding()
@@ -60,6 +59,6 @@ struct EditPostView_Previews: PreviewProvider {
     @State static var selectedPost = PostInfo(id: UUID().uuidString, nickName: "yun", contents: "won")
     @State static var isOnEditPostView = false
     static var previews: some View {
-        EditPostView(firebaseVM: FirebaseViewModel(), selectedPost: $selectedPost, isOnEditPostView: $isOnEditPostView)
+        EditPostView(firebaseVM: FirebaseViewModel(), isOnEditPostView: $isOnEditPostView)
     }
 }

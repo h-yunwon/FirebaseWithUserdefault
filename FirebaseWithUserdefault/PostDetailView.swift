@@ -17,6 +17,10 @@ struct PostDetailView: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
+            Text("이름")
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity ,alignment: .leading)
             Text(selectedPost.nickName)
             .frame(maxWidth: .infinity, maxHeight: 50)
             .background(
@@ -24,7 +28,12 @@ struct PostDetailView: View {
                     .opacity(0.2)
             )
             .cornerRadius(5)
+            .padding(.bottom, 20)
             
+            Text("정보")
+                .font(.title2)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity ,alignment: .leading)
             Text(selectedPost.contents)
             .lineLimit(4)
             .frame(maxWidth: .infinity, maxHeight: 100)
@@ -34,20 +43,20 @@ struct PostDetailView: View {
             )
             .cornerRadius(5)
             
-            HStack {
-                NavigationLink("수정", destination: {
-                    EditPostView(firebaseVM: firebaseVM, selectedPost: $selectedPost, isOnEditPostView: $isOnEditPostView)
-                })
-                
-                Button(action: {
-                    firebaseVM.deletePost(key: selectedPost.id)
-                    self.presentationMode.wrappedValue.dismiss()
-                }) {
-                    HStack {
-                        Text("삭제")
-                    }
-                }
-            }
+//            HStack {
+//                NavigationLink("수정", destination: {
+//                    EditPostView(firebaseVM: firebaseVM, selectedPost: $selectedPost, isOnEditPostView: $isOnEditPostView)
+//                })
+//
+//                Button(action: {
+//                    firebaseVM.deletePost(key: selectedPost.id)
+//                    self.presentationMode.wrappedValue.dismiss()
+//                }) {
+//                    HStack {
+//                        Text("삭제")
+//                    }
+//                }
+//            }
         }
         .padding()
     }
