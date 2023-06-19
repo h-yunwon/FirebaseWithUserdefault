@@ -11,15 +11,16 @@ import FirebaseDatabaseSwift
 
 class FirebaseViewModel: ObservableObject {
     // MARK: - PROPERTY
-    @Published var posts: [PostInfo] = []
-    @Published var nickName: String = ""
-    @Published var contents: String = ""
-    @Published var changeCount: Int = 0
     
-    let ref: DatabaseReference? = Database.database().reference()
+    // 변경 사항을 감지하기 위해 사용되는 Published 프로퍼티들
+    @Published var posts: [PostInfo] = []  // 게시물 배열
+    @Published var nickName: String = ""  // 닉네임
+    @Published var contents: String = ""  // 내용
     
-    private var encoder = JSONEncoder()
-    private var decoder = JSONDecoder()
+    let ref: DatabaseReference? = Database.database().reference()  // Firebase Realtime Database에 대한 경로 참조
+    
+    private var encoder = JSONEncoder()  // JSON 데이터를 인코딩하기 위한 JSON 인코더
+    private var decoder = JSONDecoder()  // JSON 데이터를 디코딩하기 위한 JSON 디코더
     
     // MARK: - FUNCTION
     
@@ -28,14 +29,18 @@ class FirebaseViewModel: ObservableObject {
             return
         }
         
+        // childAdded 이벤트를 관찰하여 새로 추가된 게시물을 받아옵니다.
         databasePath.observe(.childAdded) { [weak self] snapshot in
             guard let self = self, let json = snapshot.value as? [String: Any] else {
                 return
             }
             
             do {
+                // JSON 데이터를 PostInfo 객체로 변환합니다.
                 let postData = try JSONSerialization.data(withJSONObject: json)
                 let post = try self.decoder.decode(PostInfo.self, from: postData)
+                
+                // 게시물 배열을 메인 큐에서 업데이트합니다.
                 DispatchQueue.main.async {
                     self.posts.append(post)
                 }
@@ -44,16 +49,20 @@ class FirebaseViewModel: ObservableObject {
             }
         }
         
+        // childChanged 이벤트를 관찰하여 게시물이 수정될 때 업데이트를 받아옵니다.
         databasePath.observe(.childChanged) { [weak self] snapshot in
             guard let self = self, let json = snapshot.value as? [String: Any] else {
                 return
             }
             
             do {
+                // JSON 데이터를 PostInfo 객체로 변환합니다.
                 let postData = try JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
                 let post = try self.decoder.decode(PostInfo.self, from: postData)
                 
+                // 업데이트된 게시물의 인덱스를 게시물 배열에서 찾습니다.
                 if let index = self.posts.firstIndex(where: { $0.id == post.id }) {
+                    // 게시물 배열을 메인 큐에서 업데이트합니다.
                     DispatchQueue.main.async {
                         self.posts[index] = post
                     }
@@ -63,6 +72,7 @@ class FirebaseViewModel: ObservableObject {
             }
         }
         
+        // childRemoved 이벤트를 관찰하여 게시물이 삭제될 때 업데이트를 받아옵니다.
         databasePath.observe(.childRemoved) { [weak self] snapshot in
             guard let self = self, let json = snapshot.value as? [String: Any] else {
                 return
@@ -82,20 +92,24 @@ class FirebaseViewModel: ObservableObject {
             }
         }
         
-        databasePath.observe(.value) { [weak self] _ in
-            guard let self = self else {
-                return
-            }
-            DispatchQueue.main.async {
-                self.changeCount += 1
-            }
-        }
+        // value 이벤트를 관찰하여 변경 횟수를 업데이트합니다.
+//        databasePath.observe(.value) { [weak self] _ in
+//            guard let self = self else {
+//                return
+//            }
+//            // 변경 횟수를 메인 큐에서 업데이트합니다.
+//            DispatchQueue.main.async {
+//                self.changeCount += 1
+//            }
+//        }
     }
     
+    // 데이터베이스 관찰을 중지합니다.
     func stopListening() {
         ref?.removeAllObservers()
     }
     
+    // 게시물을 추가합니다.
     func addPost(post: PostInfo) {
         self.ref?.child("posts").child("\(post.id)").setValue([
             "id": post.id,
@@ -104,10 +118,12 @@ class FirebaseViewModel: ObservableObject {
         ])
     }
     
+    // 게시물을 삭제합니다.
     func deletePost(key: String) {
         ref?.child("posts/\(key)").removeValue()
     }
     
+    // 게시물을 수정합니다.
     func editPost(post: PostInfo) {
         let updates: [String: Any] = [
             "id": post.id,

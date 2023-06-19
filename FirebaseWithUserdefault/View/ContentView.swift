@@ -7,25 +7,21 @@
 
 import SwiftUI
 
-@available(iOS 15.0, *)
 struct ContentView: View {
     
     // MARK: - PROPERTY
     @ObservedObject var firebaseVM: FirebaseViewModel = FirebaseViewModel()
-    
+ 
     // MARK: - BODY
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            NavigationView {
-                VStack{
-                    Text("데이터베이스 변경사항: \(firebaseVM.changeCount)")
-                    List {
-                        ForEach(firebaseVM.posts, id: \.self) { post in
-                            NavigationLink {
-                                PostDetailView(firebaseVM: firebaseVM, selectedPost: post)
-                            } label: {
-                                ListCellView(post: post)
-                            }
+        NavigationStack {
+            VStack{
+                List {
+                    ForEach(firebaseVM.posts, id: \.self) { post in
+                        NavigationLink {
+                            PostDetailView(firebaseVM: firebaseVM, selectedPost: post)
+                        } label: {
+                            ListCellView(post: post)
                         }
                     }
                 }
@@ -38,18 +34,17 @@ struct ContentView: View {
                     }
                 }
             }
-            .onAppear {
-                firebaseVM.listenToRealtimeDatabase()
-            }
-            .onDisappear {
-                firebaseVM.stopListening()
-            }
+        }
+        .onAppear {
+            firebaseVM.listenToRealtimeDatabase()
+        }
+        .onDisappear {
+            firebaseVM.stopListening()
         }
     }
 }
 
 // MARK: - PREVIEW
-@available(iOS 15.0, *)
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
