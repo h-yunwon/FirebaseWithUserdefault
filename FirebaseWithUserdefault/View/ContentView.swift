@@ -26,7 +26,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationBarTitle(Text("User List"))
+            .navigationBarTitle(Text("프로필 리스트"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack {

@@ -71,19 +71,11 @@ struct MyProfileView: View {
                     
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink(destination: EditProfileView(firebaseVM: firebaseVM), label: {
-                            Text("Edit")
+                            Text("수정")
                         })
                     }
                 }
             }
-        }
-    }
-    
-    // MARK: - VIEW
-    
-    private var editButton: some View {
-        NavigationLink(destination: EditProfileView(firebaseVM: firebaseVM)) {
-            Text("Edit")
         }
     }
 }
