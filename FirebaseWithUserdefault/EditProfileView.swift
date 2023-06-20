@@ -37,9 +37,7 @@ struct EditProfileView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity ,alignment: .leading)
-            TextField("Enter your Name", text: $firebaseVM.nickName) {
-                
-            }
+            TextField("Enter your Name", text: $firebaseVM.nickName)
             .frame(maxWidth: .infinity, maxHeight: 50)
             .background(
                 Color(.gray)
@@ -51,9 +49,7 @@ struct EditProfileView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity ,alignment: .leading)
-            TextField("Please fill out the contents", text: $firebaseVM.contents) {
-                
-            }
+            TextField("Please fill out the contents", text: $firebaseVM.contents)
             .frame(maxWidth: .infinity, maxHeight: 100)
             .background(
                 Color(.gray)
@@ -63,7 +59,6 @@ struct EditProfileView: View {
             
             Button  {
                 saveEditPost()
-
             } label: {
                 Text("저장")
             }

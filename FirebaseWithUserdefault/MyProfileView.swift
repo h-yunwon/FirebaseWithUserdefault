@@ -14,7 +14,7 @@ struct MyProfileView: View {
     @ObservedObject var firebaseVM: FirebaseViewModel
     
     var myProfile: PostInfo
-    
+     
     // MARK: - FUNCTION
     func uploadMyProfile() {
         firebaseVM.addPost(post: PostInfo(
@@ -27,52 +27,63 @@ struct MyProfileView: View {
     
     // MARK: - BODY
     var body: some View {
-        NavigationStack {
-            VStack(alignment: .center, spacing: 10) {
-                Text("내 이름")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity ,alignment: .leading)
-                Text(firebaseVM.nickName)
-                .frame(maxWidth: .infinity, maxHeight: 50)
-                .background(
-                    Color(.gray)
-                        .opacity(0.2)
-                )
-                .cornerRadius(5)
-                .padding(.bottom, 20)
-                
-                Text("내 정보")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity ,alignment: .leading)
-                Text(firebaseVM.contents)
-                .lineLimit(4)
-                .frame(maxWidth: .infinity, maxHeight: 100)
-                .background(
-                    Color(.gray)
-                        .opacity(0.1)
-                )
-                .cornerRadius(5)
-                
-                Button(action: {
-                    uploadMyProfile()
-                    }) {
-                        HStack {
-                            Text("업로드")
-                        }
+        
+        if firebaseVM.id.isEmpty && firebaseVM.nickName.isEmpty && firebaseVM.contents.isEmpty {
+            NavigationLink(destination: EditProfileView(firebaseVM: firebaseVM), label: {
+                Text("작성하기")
+            })
+        } else {
+            NavigationStack {
+                VStack(alignment: .center, spacing: 10) {
+                    Text("내 이름")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity ,alignment: .leading)
+                    Text(firebaseVM.nickName)
+                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .background(
+                        Color(.gray)
+                            .opacity(0.2)
+                    )
+                    .cornerRadius(5)
+                    .padding(.bottom, 20)
+                    
+                    Text("내 정보")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity ,alignment: .leading)
+                    Text(firebaseVM.contents)
+                    .lineLimit(4)
+                    .frame(maxWidth: .infinity, maxHeight: 100)
+                    .background(
+                        Color(.gray)
+                            .opacity(0.1)
+                    )
+                    .cornerRadius(5)
+                    
+                    Button(action:uploadMyProfile) {
+                        Text("업로드")
                     }
+                }
+                .padding()
+                .navigationTitle("내 정보")
+                .toolbar {
+                    
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink(destination: EditProfileView(firebaseVM: firebaseVM), label: {
+                            Text("Edit")
+                        })
+                    }
+                }
             }
-            .padding()
         }
-        .navigationTitle("내 정보")
-        .toolbar {
-            
-            ToolbarItem(placement: .navigationBarTrailing) {
-                NavigationLink(destination: EditProfileView(firebaseVM: firebaseVM), label: {
-                    Text("Edit")
-                })
-            }
+    }
+    
+    // MARK: - VIEW
+    
+    private var editButton: some View {
+        NavigationLink(destination: EditProfileView(firebaseVM: firebaseVM)) {
+            Text("Edit")
         }
     }
 }

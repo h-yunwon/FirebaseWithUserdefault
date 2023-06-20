@@ -8,12 +8,22 @@
 import SwiftUI
 
 struct ProfileDetailView: View {
+    
     // MARK: - PROPERTY
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var firebaseVM: FirebaseViewModel
     @State private var isOnEditPostView: Bool = false
     @State var selectedPost: PostInfo
     
+    // MARK: - FUNCTION
+    
+    func deleteButtonAction() {
+        firebaseVM.deletePost(key: selectedPost.id)
+        firebaseVM.removePostInfo()
+        self.presentationMode.wrappedValue.dismiss()
+    }
+    
+    // MARK: - BODY
     var body: some View {
         VStack(alignment: .center, spacing: 10) {
             Text("이름")
@@ -42,19 +52,9 @@ struct ProfileDetailView: View {
             )
             .cornerRadius(5)
             
-            HStack {
-//                NavigationLink("수정", destination: {
-//                    EditProfileView(firebaseVM: firebaseVM)
-//                })
-                if selectedPost.id == firebaseVM.id {
-                    Button(action: {
-                        firebaseVM.deletePost(key: selectedPost.id)
-                        self.presentationMode.wrappedValue.dismiss()
-                    }) {
-                        HStack {
-                            Text("삭제")
-                        }
-                    }
+            if selectedPost.id == firebaseVM.id {
+                Button(action:deleteButtonAction) {
+                        Text("삭제")
                 }
             }
         }
@@ -64,6 +64,6 @@ struct ProfileDetailView: View {
 
 struct ProfileDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ProfileDetailView(firebaseVM: FirebaseViewModel(), selectedPost: PostInfo(id: UUID().uuidString, nickName: "yun", contents: "won"))
+        ProfileDetailView(firebaseVM: FirebaseViewModel(), selectedPost: PostInfo(id: UUID().uuidString, nickName: "", contents: ""))
     }
 }

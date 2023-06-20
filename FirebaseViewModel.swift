@@ -14,8 +14,8 @@ class FirebaseViewModel: ObservableObject {
     
     // 변경 사항을 감지하기 위해 사용되는 Published 프로퍼티들
     @Published var posts: [PostInfo] = []  // 게시물 배열
-    @Published var nickName: String = "Test nickname"  // 닉네임
-    @Published var contents: String = "Text contents"  // 내용
+    @Published var nickName: String = ""  // 닉네임
+    @Published var contents: String = ""  // 내용
     @Published var id:String = "" // 고유 아이디
     
     let ref: DatabaseReference? = Database.database().reference()  // Firebase Realtime Database에 대한 경로 참조
@@ -24,6 +24,10 @@ class FirebaseViewModel: ObservableObject {
     private var decoder = JSONDecoder()  // JSON 데이터를 디코딩하기 위한 JSON 디코더
     
     // MARK: - FUNCTION
+    
+    func removePostInfo() {
+        UserDefaults.standard.removeObject(forKey: "MyInfo")
+    }
     
     func savePostInfo(myInfo: PostInfo) {
         if let encoderData = try? encoder.encode(myInfo) {
@@ -37,6 +41,10 @@ class FirebaseViewModel: ObservableObject {
             id = myInfo.id
             nickName = myInfo.nickName
             contents = myInfo.contents
+        } else {
+            id = ""
+            nickName = ""
+            contents = ""
         }
     }
     
@@ -140,19 +148,19 @@ class FirebaseViewModel: ObservableObject {
     }
     
     // 게시물을 수정합니다.
-    func editPost(post: PostInfo) {
-        let updates: [String: Any] = [
-            "id": post.id,
-            "nickName": post.nickName,
-            "contents": post.contents
-        ]
-        
-        let childUpdates = ["posts/\(post.id)": updates]
-        
-        if let index = posts.firstIndex(where: { $0.id == post.id }) {
-            posts[index] = post
-        }
-        
-        self.ref?.updateChildValues(childUpdates)
-    }
+//    func editPost(post: PostInfo) {
+//        let updates: [String: Any] = [
+//            "id": post.id,
+//            "nickName": post.nickName,
+//            "contents": post.contents
+//        ]
+//
+//        let childUpdates = ["posts/\(post.id)": updates]
+//
+//        if let index = posts.firstIndex(where: { $0.id == post.id }) {
+//            posts[index] = post
+//        }
+//
+//        self.ref?.updateChildValues(childUpdates)
+//    }
 }
