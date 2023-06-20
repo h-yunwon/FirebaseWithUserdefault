@@ -43,16 +43,17 @@ struct ProfileDetailView: View {
             .cornerRadius(5)
             
             HStack {
-                NavigationLink("수정", destination: {
-                    EditProfileView(firebaseVM: firebaseVM)
-                })
-
-                Button(action: {
-                    firebaseVM.deletePost(key: selectedPost.id)
-                    self.presentationMode.wrappedValue.dismiss()
-                }) {
-                    HStack {
-                        Text("삭제")
+//                NavigationLink("수정", destination: {
+//                    EditProfileView(firebaseVM: firebaseVM)
+//                })
+                if selectedPost.id == firebaseVM.id {
+                    Button(action: {
+                        firebaseVM.deletePost(key: selectedPost.id)
+                        self.presentationMode.wrappedValue.dismiss()
+                    }) {
+                        HStack {
+                            Text("삭제")
+                        }
                     }
                 }
             }

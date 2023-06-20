@@ -21,7 +21,7 @@ struct ContentView: View {
                         NavigationLink {
                             ProfileDetailView(firebaseVM: firebaseVM, selectedPost: post)
                         } label: {
-                            ListCellView(post: post)
+                            ListCellView(post: post, id: firebaseVM.id)
                         }
                     }
                 }
