@@ -19,7 +19,7 @@ struct ContentView: View {
                 List {
                     ForEach(firebaseVM.posts, id: \.self) { post in
                         NavigationLink {
-                            PostDetailView(firebaseVM: firebaseVM, selectedPost: post)
+                            ProfileDetailView(firebaseVM: firebaseVM, selectedPost: post)
                         } label: {
                             ListCellView(post: post)
                         }
@@ -29,11 +29,14 @@ struct ContentView: View {
             .navigationBarTitle(Text("User List"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: AddPostView(firebaseVM: firebaseVM)) {
-                        Image(systemName: "person.crop.circle")
-                    }
-                    .onAppear {
-                        firebaseVM.loadPostInfo()
+                    HStack {
+                        
+                        NavigationLink(destination: MyProfileView(firebaseVM: firebaseVM, myProfile:PostInfo(id: firebaseVM.id, nickName: firebaseVM.nickName, contents: firebaseVM.contents))) {
+                            Image(systemName: "person.crop.circle")
+                        }
+                        .onAppear {
+                            firebaseVM.loadPostInfo()
+                        }
                     }
                 }
             }

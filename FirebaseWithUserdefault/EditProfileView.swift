@@ -7,12 +7,28 @@
 
 import SwiftUI
 
-struct EditPostView: View {
+struct EditProfileView: View {
     // MARK: - PROPERTY
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
+    
     @ObservedObject var firebaseVM : FirebaseViewModel
-    @State private var nickName: String = ""
-    @State private var contents: String = ""
-    @Binding var isOnEditPostView: Bool
+    
+    // MARK: - FUNCTION
+    
+    func saveEditPost() {
+        if firebaseVM.id.isEmpty {
+            firebaseVM.id = UUID().uuidString
+        }
+        
+        let editInfo = PostInfo(
+            id: firebaseVM.id,
+            nickName: firebaseVM.nickName,
+            contents: firebaseVM.contents
+        )
+        
+        firebaseVM.savePostInfo(myInfo: editInfo)
+        self.mode.wrappedValue.dismiss()
+    }
 
     // MARK: - BODY
     var body: some View {
@@ -46,7 +62,8 @@ struct EditPostView: View {
             .cornerRadius(5)
             
             Button  {
-                isOnEditPostView.toggle()
+                saveEditPost()
+
             } label: {
                 Text("저장")
             }
@@ -55,10 +72,9 @@ struct EditPostView: View {
     }
 }
 
-struct EditPostView_Previews: PreviewProvider {
-    @State static var selectedPost = PostInfo(id: UUID().uuidString, nickName: "yun", contents: "won")
-    @State static var isOnEditPostView = false
+struct EditProfileView_Previews: PreviewProvider {
+
     static var previews: some View {
-        EditPostView(firebaseVM: FirebaseViewModel(), isOnEditPostView: $isOnEditPostView)
+        EditProfileView(firebaseVM: FirebaseViewModel())
     }
 }

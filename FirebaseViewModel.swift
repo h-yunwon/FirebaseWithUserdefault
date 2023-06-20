@@ -16,6 +16,7 @@ class FirebaseViewModel: ObservableObject {
     @Published var posts: [PostInfo] = []  // 게시물 배열
     @Published var nickName: String = "Test nickname"  // 닉네임
     @Published var contents: String = "Text contents"  // 내용
+    @Published var id:String = "" // 고유 아이디
     
     let ref: DatabaseReference? = Database.database().reference()  // Firebase Realtime Database에 대한 경로 참조
     
@@ -31,8 +32,9 @@ class FirebaseViewModel: ObservableObject {
     }
     
     func loadPostInfo() {
-        if let encoderData = try? UserDefaults.standard.data(forKey: "MyInfo"),
+        if let encoderData = UserDefaults.standard.data(forKey: "MyInfo"),
             let myInfo = try? decoder.decode(PostInfo.self, from: encoderData) {
+            id = myInfo.id
             nickName = myInfo.nickName
             contents = myInfo.contents
         }

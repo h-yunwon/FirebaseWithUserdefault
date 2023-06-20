@@ -8,8 +8,8 @@
 import Foundation
 
 struct PostInfo: Codable, Identifiable, Hashable {
-    var id: String
-    var nickName: String
-    var contents: String
+    let id: String
+    let nickName: String
+    let contents: String
 }
 

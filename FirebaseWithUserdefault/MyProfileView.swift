@@ -7,11 +7,23 @@
 
 import SwiftUI
 
-struct AddPostView: View {
+struct MyProfileView: View {
     
     // MARK: - PROPERTY
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var firebaseVM: FirebaseViewModel
+    
+    var myProfile: PostInfo
+    
+    // MARK: - FUNCTION
+    func uploadMyProfile() {
+        firebaseVM.addPost(post: PostInfo(
+            id: firebaseVM.id,
+            nickName: firebaseVM.nickName,
+            contents: firebaseVM.contents
+        ))
+            self.presentationMode.wrappedValue.dismiss()
+    }
     
     // MARK: - BODY
     var body: some View {
@@ -44,8 +56,7 @@ struct AddPostView: View {
                 .cornerRadius(5)
                 
                 Button(action: {
-                    firebaseVM.addPost(post: PostInfo(id: UUID().uuidString, nickName: firebaseVM.nickName, contents: firebaseVM.contents))
-                        self.presentationMode.wrappedValue.dismiss()
+                    uploadMyProfile()
                     }) {
                         HStack {
                             Text("업로드")
@@ -55,19 +66,21 @@ struct AddPostView: View {
             .padding()
         }
         .navigationTitle("내 정보")
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarTrailing) {
-//                NavigationLink(destination: EditPostView(), label: {
-//                    Text("Edit")
-//                })
-//            }
-//        }
+        .toolbar {
+            
+            ToolbarItem(placement: .navigationBarTrailing) {
+                NavigationLink(destination: EditProfileView(firebaseVM: firebaseVM), label: {
+                    Text("Edit")
+                })
+            }
+        }
     }
 }
 
-struct AddPostView_Previews: PreviewProvider {
+struct MyProfileView_Previews: PreviewProvider {
 
+    @State static var myProfile = PostInfo(id: UUID().uuidString, nickName: "test", contents: "testcontents")
     static var previews: some View {
-        AddPostView(firebaseVM: FirebaseViewModel())
+        MyProfileView(firebaseVM: FirebaseViewModel(), myProfile: myProfile)
     }
 }
