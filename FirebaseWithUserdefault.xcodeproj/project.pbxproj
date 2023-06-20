@@ -35,7 +35,7 @@
 		5F3AC1A92A3D40E400623B69 /* InfoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InfoModel.swift; path = FirebaseWithUserdefault/Model/InfoModel.swift; sourceTree = SOURCE_ROOT; };
 		5F3AC1AB2A3D65BE00623B69 /* ListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListCellView.swift; path = FirebaseWithUserdefault/View/ListCellView.swift; sourceTree = SOURCE_ROOT; };
 		5F3AC1AD2A3D671A00623B69 /* MyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyProfileView.swift; path = FirebaseWithUserdefault/View/MyProfileView.swift; sourceTree = SOURCE_ROOT; };
-		5F3AC1AF2A3D673300623B69 /* ProfileDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileDetailView.swift; path = FirebaseWithUserdefault/ProfileDetailView.swift; sourceTree = SOURCE_ROOT; };
+		5F3AC1AF2A3D673300623B69 /* ProfileDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProfileDetailView.swift; path = FirebaseWithUserdefault/View/ProfileDetailView.swift; sourceTree = SOURCE_ROOT; };
 		5F3AC1B12A3D9A1300623B69 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EditProfileView.swift; path = FirebaseWithUserdefault/View/EditProfileView.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
