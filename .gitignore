@@ -62,7 +62,7 @@ DerivedData/
 ## Obj-C/Swift specific
 *.hmap
 Info.plist
-GoogleService-Info
+GoogleService-Info.plist
 
 ## App packaging
 *.ipa
